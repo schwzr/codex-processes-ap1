@@ -25,7 +25,7 @@ import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r4.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r4.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r4.utils.INarrativeGenerator;
-import org.hl7.fhir.r4.utils.IResourceValidator;
+import org.hl7.fhir.r4.utils.validation.IResourceValidator;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
@@ -228,6 +228,12 @@ public class PluginWorkerContext implements IWorkerContext
 	public String formatMessage(String theMessage, Object... theMessageArguments)
 	{
 		return delegate.formatMessage(theMessage, theMessageArguments);
+	}
+
+	@Override
+	public String formatMessagePlural(Integer pl, String theMessage, Object... theMessageArguments)
+	{
+		return delegate.formatMessagePlural(pl, theMessage, theMessageArguments);
 	}
 
 	@Override

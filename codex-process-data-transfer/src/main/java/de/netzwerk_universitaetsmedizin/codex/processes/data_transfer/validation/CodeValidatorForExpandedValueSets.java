@@ -18,7 +18,7 @@ import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.context.support.ConceptValidationOptions;
 import ca.uhn.fhir.context.support.IValidationSupport;
 import ca.uhn.fhir.context.support.ValidationSupportContext;
-import ca.uhn.fhir.util.VersionIndependentConcept;
+import ca.uhn.fhir.util.FhirVersionIndependentConcept;
 
 public class CodeValidatorForExpandedValueSets implements IValidationSupport
 {
@@ -64,7 +64,7 @@ public class CodeValidatorForExpandedValueSets implements IValidationSupport
 		if (!options.isInferSystem() && isNotBlank(targetCodeSystem))
 			codeSystem = (CodeSystem) supportContext.getRootValidationSupport().fetchCodeSystem(targetCodeSystem);
 
-		List<VersionIndependentConcept> codes = new ArrayList<>();
+		List<FhirVersionIndependentConcept> codes = new ArrayList<>();
 		flatten(expansion.getContains(), codes);
 
 		String codeSystemName = null;
@@ -79,7 +79,7 @@ public class CodeValidatorForExpandedValueSets implements IValidationSupport
 			codeSystemContentMode = codeSystem.getContentElement().getValueAsString();
 		}
 
-		for (VersionIndependentConcept nextExpansionCode : codes)
+		for (FhirVersionIndependentConcept nextExpansionCode : codes)
 		{
 			boolean codeMatches;
 			if (codeSystemCaseSensitive)
@@ -127,11 +127,12 @@ public class CodeValidatorForExpandedValueSets implements IValidationSupport
 		return new CodeValidationResult().setSeverityCode(severity.toCode()).setMessage(message);
 	}
 
-	private void flatten(List<ValueSetExpansionContainsComponent> components, List<VersionIndependentConcept> concepts)
+	private void flatten(List<ValueSetExpansionContainsComponent> components,
+			List<FhirVersionIndependentConcept> concepts)
 	{
 		for (ValueSetExpansionContainsComponent next : components)
 		{
-			concepts.add(new VersionIndependentConcept(next.getSystem(), next.getCode(), next.getDisplay()));
+			concepts.add(new FhirVersionIndependentConcept(next.getSystem(), next.getCode(), next.getDisplay()));
 			flatten(next.getContains(), concepts);
 		}
 	}
